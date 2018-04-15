@@ -1,4 +1,5 @@
-﻿<   Do it! 쉽게 배우는 R 데이터 분석> 저장소
+﻿<Do it! 쉽게 배우는 R 데이터 분석> 저장소
+ <Do it! 쉽게 배우는 R 데이터 분석> 저장소
 ---
 - [Data](https://github.com/youngwoos/Doit_R/tree/master/Data) 폴더에 실습에 필요한 데이터 파일이 들어있습니다.
 
