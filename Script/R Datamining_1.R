@@ -15,7 +15,12 @@ test.function(2, 3, 1)
 ## 52
 
 var1 <- 10
+var1
+class(var1)
+
 var1 <- 'a string'
+var1
+class(var1)
 
 ## 54
 
