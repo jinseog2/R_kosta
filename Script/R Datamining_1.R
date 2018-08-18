@@ -1,4 +1,4 @@
-## 51
+## 함수
 
 var1 <- sum(c(4, 3, 2))
 var1
@@ -12,7 +12,7 @@ test.function <- function(a, b, c){
 }
 test.function(2, 3, 1)
 
-## 52
+## 변수
 
 var1 <- 10
 var1
@@ -22,7 +22,7 @@ var1 <- 'a string'
 var1
 class(var1)
 
-## 54
+## Vectors
 
 aaa <- numeric(length = 5)
 aaa[1] <- 6
@@ -32,7 +32,7 @@ aaa[3] <- 'a string'
 class(aaa)
 aaa[1] - aaa[2]
 
-## 55
+## Lists
 
 aaa <- list()
 aaa[1] <- 4
@@ -41,7 +41,7 @@ aaa[3] <- 'a string'
 aaa
 aaa[[2]] - aaa[[1]]
 
-## 56
+## Matrix and array
 
 numeric.vector <- 1:20
 attr(numeric.vector, 'dim') <- c(10, 2)
@@ -51,7 +51,7 @@ numeric.vector <- 1:20
 numeric.vector <- matrix(numeric.vector, 10, 2)
 class(numeric.vector)
 
-## 57
+## Data frmes
 
 numeric.vector <- 1:5
 character.vector <- letters[1:5]
@@ -60,7 +60,7 @@ class(character.vector)
 df <- data.frame(numeric.vector, character.vector)
 class(df)
 
-## 58
+## Factors
 
 animals <- c('dog', 'cat', 'dog', 'horse')
 class(animals)
@@ -73,7 +73,86 @@ cat(animals)
 as.character(animals)
 as.numeric(animals)
 
-## 59
+factor(animals, levels = c("horse", "dog", "cat"))
+
+factor(animals, levels = c("horse", "dog", "cat"), ordered = T)
+
+## names
+
+Poker_vector <- c(40, 150, -30, 20, -240)
+names(Poker_vector)
+
+names(Poker_vector) <- c(‘Monday’, ‘Tuesday’, ‘Wednesday’,’Thursday’, ‘Friday’)
+names(Poker_vector)
+
+## +, -
+
+VecA <- c(1, 2, 3)
+VecB <- c(4, 5, 6)
+
+Total_vec <- VecA + VecB
+Total_vec
+
+Diff_vec <- VecA – VecB
+Diff_vec
+
+## *, /, %/%, %%
+
+VecA <- c(1, 2, 3)
+VecB <- c(4, 5, 6)
+
+Mul_vec <- VecB * VecA
+Mul_vec
+
+Div_vec <- VecB / VecA
+Div_vec
+
+Qu_vec <- VecB %/% VecA
+Qu_vec
+
+Re_vec <- VecB %% VecA
+Re_vec
+
+## sum, mean
+
+Poker_vector <- c(40, 150, -30, 20, -240)
+
+TotalPoker <- sum(Poker_vector)
+TotalPoker
+
+MeanPoker <- mean(Poker_vector)
+MeanPoker
+
+## *, / 
+
+x <- matrix(c(1:9), ncol = 3)
+x
+
+x * 2
+x / 2
+
+## +, - 
+
+y <- matrix(c(9:1), nrow = 3)
+x + y
+x - y
+
+## %*%
+
+x %*% y
+x[1,1] * y[1,1] + x[1,2] * y[2,1] + x[1,3] * y[3,1]
+1 * 9 + 4 * 8 + 7 * 7
+
+## ncol( ), nrow( )
+
+x <- matrix(c(1:9), ncol=3)
+x
+t(x)
+
+ncol(x)
+nrow(x)
+
+## Vector selection
 
 LETTERS[c(1, 5, 6)]
 LETTERS[-c(1, 5, 6)]
@@ -97,7 +176,7 @@ aaa <- 1:10
 names(aaa) <- LETTERS[1:10]
 aaa['Z']
 
-## 60
+## Array selection
 
 aaa <- matrix(1:16, 4, 4)
 aaa
@@ -116,7 +195,7 @@ colnames(aaa) <- letters[1:4]
 aaa[c('A', 'C'), c('a', 'd')]
 aaa[1:2,]
 
-## 61
+## List selection
 
 list.ex <- list(a = c(1, 2, 3), b = c('a', 'b', 'c'), c = list(var1 = 'a', var2 = 'b'))
 class(list.ex[2])
@@ -125,7 +204,7 @@ list.ex[['b']]
 list.ex[[1:3]]
 list.ex$a
 
-## 62
+## Data frame selection
 
 test.data.frame <- data.frame(Var1 = 1:10, Var2 = LETTERS[1:10])
 test.data.frame$Var1
@@ -146,7 +225,7 @@ subset(test.data.frame, Var1 >= 8, select = -Var2)
 idx <- which(test.data.frame$Var1 >= 8)
 test.data.frame[idx, ]
 
-## 63
+## if else, while
 
 a <- 5
 if (a > 0) {print ('a is greater than 0')} else
@@ -170,7 +249,7 @@ while (a < 4) {
   a <- a + 1
 }
 
-## 64
+## for, switch
 
 vector <- c('aaa', 'bbb', 'ccc')
 for (i in vector) {
@@ -207,23 +286,21 @@ switch(inp,
 inp <- 2
 switch(inp, 'inp+1', 'inp+2', 'inp+3', 'inp+4')
 
-## 65
+## Reading csv
 
 path <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 data <- read.table(path, sep=',')
 class(data)
 
-path <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 data <- readLines(path)
 class(data)
 length(data)
 
-path <- 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
 data <- readChar(path, nchars = 1e5)
 class(data)
 length(data)
 
-## 66
+## Reading JSON, XML
 
 library(RJSONIO)
 url <- 'http://api.worldbank.org/v2/datacatalog?format=json'
@@ -238,6 +315,20 @@ library(XML)
 url <- 'http://api.worldbank.org/v2/datacatalog?format=xml'
 xml.obj <- xmlTreeParse(url)
 class(xml.obj)
+
+## Reading Excel
+
+#install.packages('openxlsx')
+library(openxlsx)
+
+## 엑셀 파일 입력
+xlsxFile <- "https://github.com/awalker89/openxlsx/raw/master/inst/readTest.xlsx"
+xlsx.data <- read.xlsx(xlsxFile)
+View(xlsx.data)
+
+## 엑셀 파일 출력
+## 오류 : write.xlsx(data.csv, file='iris.R.xlsx')
+## Rtools 필요
 
 ## 69
 
