@@ -1,4 +1,11 @@
-## 14
+## iris Data
+
+data(iris)
+data(iris, package = 'datasets')
+
+library(help = 'datasets')
+ls('package:datasets')
+
 str(iris)
 
 set.seed(1234)
@@ -6,7 +13,8 @@ ind <- sample(2, nrow(iris), replace = TRUE, prob = c(0.7, 0.3))
 train.data <- iris[ind ==1,]
 test.data <- iris[ind == 2,]
 
-## 15
+## Build a ctree
+
 library(party)
 
 myFormula <- Species ~ Sepal.Length + Sepal.Width + Petal.Length + Petal.Width
@@ -14,23 +22,24 @@ iris_ctree <- ctree(myFormula, data = train.data)
 
 table(predict(iris_ctree), train.data$Species)
 
-## 16
+## Result and Predict ctree
+
 print(iris_ctree)
 
-## 17
 plot(iris_ctree)
 plot(iris_ctree, type = 'simple')
 
-## 18
 testPred <- predict(iris_ctree, newdata = test.data)
 table(testPred, test.data$Species)
 
-## 19
+## The bodyfat Dataset
+
 data('bodyfat', package = 'TH.data')
 dim(bodyfat)
 head(bodyfat, 5)
 
-## 20
+## Train a Decision Tree with rpart
+
 set.seed(1234)
 ind <- sample(2, nrow(bodyfat), replace=T, prob = c(0.7, 0.3))
 bodyfat.train <- bodyfat[ind == 1,]
@@ -40,13 +49,13 @@ library(rpart)
 myFormula <- DEXfat ~ age + waistcirc + hipcirc + elbowbreadth + kneebreadth
 bodyfat_rpart <- rpart(myFormula, data = bodyfat.train, control = rpart.control(minsplit = 10))
 
+## Result rpart & Pruning
+
 print(bodyfat_rpart)
 
-## 21
 plot(bodyfat_rpart)
 text(bodyfat_rpart, use.n = T)
 
-## 22
 opt <- which.min(bodyfat_rpart$cptable[, 'xerror'])
 cp <- bodyfat_rpart$cptable[opt, 'CP']
 
@@ -55,15 +64,14 @@ bodyfat_prune <- prune(bodyfat_rpart, cp = cp)
 plot(bodyfat_prune)
 text(bodyfat_prune, use.n = T)
 
-data(infert, package='datasets')
+## Model Evaluation
 
-## 23
 DEXfat_pred <- predict(bodyfat_prune, newdata = bodyfat.test)
 xlim <- range(bodyfat$DEXfat)
 plot(DEXfat_pred ~ DEXfat, data = bodyfat.test, xlab = 'Observed', ylab = 'prediction', ylim = xlim, xlim = xlim)
 abline(a = 0, b = 1)
 
-## 24
+## Train a Random Forest
 ind <- sample(2, nrow(iris), replace = TRUE, prob = c(0.7, 0.3))
 train.data <- iris[ind == 1, ]
 test.data <- iris[ind == 2, ]
@@ -71,25 +79,27 @@ test.data <- iris[ind == 2, ]
 library(randomForest)
 rf <- randomForest(Species ~ ., data = train.data, ntree = 100, proximity = T)
 
-table(predict(rf), train.data$Species)
+table(train.data$Species, predict(rf))
+
+## Result of Random Forest
 
 print(rf)
 
-## 25
+# Error Rate
 plot(rf, matin = '')
 
-## 26
+# Variable Importance
 importance(rf)
 
 varImpPlot(rf)
 
-## 27
+## Predictions of Random Forest
+
 irisPred <- predict(rf, newdata = test.data)
 table(irisPred, test.data$Species)
 
-plot(margin(rf, test.data$Species))
+## Train by neuralnet
 
-## 38
 data(infert, package = 'datasets')
 
 ind <- sample(2, nrow(infert), replace = T, prob = c(0.7, 0.3))
@@ -104,7 +114,7 @@ print(net.infert)
 
 plot(net.infert)
 
-## 39
+## Train by nnet 1
 
 library(nnet)
 
@@ -120,7 +130,8 @@ inf.test.result <- ifelse(inf.test.result > 0.5, 1, 0)
 
 table(test.infert$case, inf.test.result)
 
-## 40
+## Train by nnet 2
+
 iris.targets <- class.ind(iris$Species)
 iris.new <- cbind(iris[,1:4], iris.targets)
 
@@ -142,7 +153,8 @@ test.cl(train.iris[,5:7], predict(iris.nn, train.iris[,1:4]))
 
 test.cl(test.iris[,5:7], predict(iris.nn, test.iris[,1:4]))
 
-## 41
+## Train by nnet 3
+
 train.iris2 <- iris[ind == 1,]
 test.iris2 <- iris[ind == 2,]
 
@@ -151,7 +163,8 @@ iris.nn2 <- nnet(Species ~ ., data = train.iris2, size = 2, rang = 0.1, decay = 
 table(train.iris2$Species, predict(iris.nn2, train.iris2, type = "class"))
 table(test.iris2$Species, predict(iris.nn2, test.iris2, type = "class"))
 
-## 46
+## Train by SVM 1
+library(e1071)
 
 ind <- sample(2, nrow(iris), replace = T, prob = c(0.7, 0.3))
 train.iris <- iris[ind == 1,]
@@ -162,6 +175,8 @@ model <- svm(Species ~ ., data = train.iris)
 print(model)
 
 summary(model)
+
+## Train by SVM 2
 
 plot(cmdscale(dist(train.iris[,-5])),
      col = as.integer(train.iris[,5]),
