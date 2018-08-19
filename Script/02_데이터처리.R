@@ -120,37 +120,78 @@ which.min(iris$Sepal.Length)
 iris[which.min(iris$Sepal.Length),]
 
 which.max(iris$Sepal.Length)
-iris[which.max(iris$Sepal.Length),]            
+iris[which.max(iris$Sepal.Length),] 
             
-## plyr
-
-library(plyr)
-ddply(iris, .(Species), summarize, indicator1 = quantile(Sepal.Length, 0.75), indicator2 = sum(Sepal.Width)/sum(Petal.Length))
-dlply(iris, .(Species), summarize, indicator1 = quantile(Sepal.Length, 0.75), indicator2 = sum(Sepal.Width)/sum(Petal.Length))
-
-## reshape2
-
-library(reshape2)
-data(iris)
-melt(iris)
+## dplyr 1
+  
+library(dplyr)
 
 data('iris')
-m.iris <- melt(iris)
-dcast(m.iris, variable ~ Species, fun.aggregate = sum)
-dcast(m.iris, variable ~ Species, fun.aggregate = function(x) sum(x + 2))
+iris %>%  filter(Species == "setosa")
+iris %>%  filter(Sepal.Length > 7)
+iris %>%  filter(Sepal.Length > 6) %>% filter(Sepal.Width > 3.5)
+iris %>%  filter(Sepal.Length > 6 & Sepal.Width > 3.5)
+iris %>%  filter(Sepal.Length > 6 | Sepal.Width > 3.5)
 
-class(acast(m.iris, variable ~ Species, fun.aggregate = sum))
-class(dcast(m.iris, variable ~ Species, fun.aggregate = sum))
-      
-## aggregate
-      
-aggregate(Sepal.Width ~ Species, iris, mean)
-testDF <- data.frame(v1 = c(1,3,5,7,8,3,5,NA,4,5,7,9),
-                     v2 = c(11,33,55,77,88,33,55,NA,44,55,77,99) )
-by1 <- c("red", "blue", 1, 2, NA, "big", 1, 2, "red", 1, NA, 12)
-by2 <- c("wet", "dry", 99, 95, NA, "damp", 95, 99, "red", 99, NA, NA)
-aggregate(x = testDF, by = list(by1, by2), FUN = "mean")      
-      
+iris %>% filter(Species == "setosa" | Species == "virginica")
+iris %>% filter(Species %in% c("setosa", "virginica"))
+            
+## dplyr 2
+            
+iris %>% select(Species)
+iris %>% select(Sepal.Length, Petal.Length, Species)
+
+iris %>% select(-Species)
+iris %>% select(-Sepal.Length, -Sepal.Width)
+
+iris %>% select(Sepal.Length, Species) %>% 
+  filter(Species == "setosa" & Sepal.Length > 5.4)
+
+iris %>% select(Sepal.Length, Species) %>% 
+  filter(Species == "setosa" & Sepal.Length > 4) %>%
+  head
+            
+## dplyr 3
+            
+# 정렬하기
+iris %>% arrange(Sepal.Length)
+iris %>% arrange(desc(Sepal.Length))
+iris %>% arrange(Sepal.Length, Sepal.Width)
+
+# 파생변수 추가하기
+iris %>% 
+  mutate(Sepal.total = Sepal.Length + Sepal.Width) %>% 
+  head
+
+iris %>% 
+  mutate(Sepal.total = Sepal.Length + Sepal.Width,
+         Petal.mean = (Petal.Length + Petal.Width)/2) %>% 
+  head
+
+iris %>% 
+  mutate(Size = ifelse(Sepal.Length >= 6, "big", "small")) %>% 
+  head
+
+## 요약하기
+            
+iris %>% summarise(Sepal.Length.mean = mean(Sepal.Length))
+
+iris %>% group_by(Species) %>% 
+  summarise(Sepal.Length.mean = mean(Sepal.Length))
+
+iris %>% group_by(Species) %>% 
+  summarise(Sepal.Length.mean = mean(Sepal.Length),
+            Sepal.Length.sum = sum(Sepal.Length),
+            Sepal.Length.median = median(Sepal.Length),
+            Sepal.Length.max = max(Sepal.Length),
+            n = n())
+
+mpg <- ggplot2::mpg
+View(mpg)
+mpg %>% group_by(manufacturer, drv) %>% 
+  summarise(mean_cty = mean(cty)) %>%
+  head
+     
 ## table
       
 table(by1, by2)
